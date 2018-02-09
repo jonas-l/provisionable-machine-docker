@@ -1,6 +1,6 @@
 FROM alpine:3.7
 
-RUN apk --update --no-cache add sudo shadow openssl ca-certificates openrc dropbear &&\
+RUN apk --update --no-cache add sudo shadow openssl ca-certificates openrc openssh-server openssh-sftp-server &&\
 # Configure openrc
 # ================
 # Tell openrc its running inside a container, till now that has meant LXC
@@ -17,9 +17,9 @@ RUN apk --update --no-cache add sudo shadow openssl ca-certificates openrc dropb
     sed -i 's/mount -t tmpfs/# mount -t tmpfs/g' /lib/rc/sh/init.sh &&\
 # can't do cgroups
     sed -i 's/cgroup_add_service /# cgroup_add_service /g' /lib/rc/sh/openrc-run.sh &&\
-# Setup Dropbear
+# Setup OpenSSH server
 # ==============
-    rc-update add dropbear &&\
+    rc-update add sshd &&\
 # Setup root user
 # ===============
     echo "root:root" | chpasswd
