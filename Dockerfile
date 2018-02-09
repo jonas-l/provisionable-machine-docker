@@ -24,6 +24,9 @@ RUN apk --update --no-cache add sudo shadow openssl ca-certificates openrc opens
 # ===============
     echo "root:root" | chpasswd
 
+COPY rootfs /
+RUN chmod 0600 /etc/ssh/*_key
+
 EXPOSE 22
 
 CMD ["/sbin/init"]
